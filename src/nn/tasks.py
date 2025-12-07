@@ -68,6 +68,11 @@ from src.nn.modules import (
     YOLOEDetect,
     YOLOESegment,
     v10Detect,
+    C2f_ESEMB,
+    C2f_Faster,
+    C3_Faster,
+    CLLADetect,
+    ACmix,
 )
 from src.utils import DEFAULT_CFG_DICT, LOGGER, YAML, colorstr, emojis
 from src.utils.checks import check_requirements, check_suffix, check_yaml
@@ -1553,6 +1558,10 @@ def parse_model(d, ch, verbose=True):
             SCDown,
             C2fCIB,
             A2C2f,
+            C2f_ESEMB,
+            C2f_Faster,
+            C3_Faster,
+            ACmix,
         }
     )
     repeat_modules = frozenset(  # modules with 'repeat' arguments
@@ -1572,6 +1581,10 @@ def parse_model(d, ch, verbose=True):
             C2fCIB,
             C2PSA,
             A2C2f,
+            C2f_ESEMB,
+            C2f_Faster,
+            C3_Faster,
+            ACmix,
         }
     )
     for i, (f, n, m, args) in enumerate(d["backbone"] + d["head"]):  # from, number, module, args
@@ -1624,7 +1637,7 @@ def parse_model(d, ch, verbose=True):
         elif m is Concat:
             c2 = sum(ch[x] for x in f)
         elif m in frozenset(
-            {Detect, WorldDetect, YOLOEDetect, Segment, YOLOESegment, Pose, OBB, ImagePoolingAttn, v10Detect}
+            {Detect, WorldDetect, YOLOEDetect, Segment, YOLOESegment, Pose, OBB, ImagePoolingAttn, v10Detect, CLLADetect}
         ):
             args.append([ch[x] for x in f])
             if m is Segment or m is YOLOESegment:
